@@ -33,6 +33,7 @@ class MainActivity : ComponentActivity() {
                     when (it) {
                         is TimerViewModel.Event.StartTimer -> viewModel.startTimer()
 
+                        TimerViewModel.Event.TurnChange ->  viewModel.turnChange()
                         else -> {
 
                         }

@@ -24,8 +24,11 @@ class TimerViewModel @Inject constructor() : BaseViewModel<TimerViewModel.Event>
 
         class StartTimer(val message: String) : Event()
         class StartTime(val message: String) : Event()
-        object GotoAboutPage : Event()
+        object TurnChange : Event()
     }
+
+    private val _tag = MutableStateFlow(true)
+    val tag = _tag.asStateFlow()
 
     private val _bluetimer = MutableStateFlow(0L)
     val bluetimer = _bluetimer.asStateFlow()
@@ -45,15 +48,29 @@ class TimerViewModel @Inject constructor() : BaseViewModel<TimerViewModel.Event>
     }
 
     fun startTimer() {
-
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
             while (true) {
                 delay(10)
-                _bluetimer.value++
-                _redTimer.value++
+                if (tag.value) {
+                    _bluetimer.value--
+                } else {
+                    _redTimer.value--
+                }
             }
         }
+    }
+
+    fun turnChange() {
+        if (_tag.value) {
+            _bluetimer.value = 0
+            _redTimer.value = 6000
+        } else {
+            _bluetimer.value = 6000
+            _redTimer.value = 0
+        }
+        _tag.value = !tag.value
+        startTimer()
     }
 
     fun pauseTimer() {
