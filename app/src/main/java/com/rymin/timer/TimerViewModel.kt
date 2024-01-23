@@ -2,11 +2,6 @@ package com.rymin.timer
 
 import com.rymin.timer.base.BaseViewModel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rymin.timer.ui.TimerListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,13 +22,17 @@ class TimerViewModel @Inject constructor() : BaseViewModel<TimerViewModel.Event>
         object Finish : Event()
         object AppExit : Event()
 
+        class StartTimer(val message: String) : Event()
         class StartTime(val message: String) : Event()
-        class AddEvent(val message: String) : Event()
         object GotoAboutPage : Event()
     }
 
-    private val _timer = MutableStateFlow(0L)
-    val timer = _timer.asStateFlow()
+    private val _bluetimer = MutableStateFlow(0L)
+    val bluetimer = _bluetimer.asStateFlow()
+
+    private val _redTimer = MutableStateFlow(0L)
+    val redTimer = _redTimer.asStateFlow()
+
 
     private val _deviceListUiState = MutableStateFlow(TimerListUiState.empty())
     val deviceListUiState: StateFlow<TimerListUiState> = _deviceListUiState.asStateFlow()
@@ -46,11 +45,13 @@ class TimerViewModel @Inject constructor() : BaseViewModel<TimerViewModel.Event>
     }
 
     fun startTimer() {
+
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
             while (true) {
                 delay(10)
-                _timer.value++
+                _bluetimer.value++
+                _redTimer.value++
             }
         }
     }
@@ -60,7 +61,7 @@ class TimerViewModel @Inject constructor() : BaseViewModel<TimerViewModel.Event>
     }
 
     fun stopTimer() {
-        _timer.value = 0
+        _bluetimer.value = 0
         timerJob?.cancel()
     }
 

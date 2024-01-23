@@ -30,13 +30,14 @@ import com.rymin.timer.utils.formatTime
 fun TimerScreen(
     viewModel: TimerViewModel = viewModel()
 ) {
-    val timerValue by viewModel.timer.collectAsState()
+    val blueTimerValue by viewModel.bluetimer.collectAsState()
+    val redTimerValue by viewModel.redTimer.collectAsState()
 
     TimerTheme {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = timerValue.formatTime(),
+                    text = blueTimerValue.formatTime(),
                     style = TextStyle(
                         fontSize = 80.sp
                     ),
@@ -46,16 +47,21 @@ fun TimerScreen(
                 )
                 Spacer(modifier = Modifier.weight(1.0f))
                 Button(
-                    modifier = Modifier.height(48.dp),
+                    modifier = Modifier.height(80.dp),
                     onClick = {
                         viewModel.startTimer()
                     },
                 ) {
-                    Text(text = "Button")
+                    Text(
+                        text = "TurnChange",
+                        style = TextStyle(
+                            fontSize = 36.sp
+                        )
+                    )
                 }
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
-                    text = timerValue.formatTime(),
+                    text = redTimerValue.formatTime(),
                     style = TextStyle(
                         fontSize = 80.sp
                     ),
