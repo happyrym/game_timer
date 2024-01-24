@@ -8,9 +8,10 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.rymin.timer.ui.TimerScreen
+import com.rymin.timer.ui.RootScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -20,20 +21,20 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TimerScreen()
+            RootScreen()
         }
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.eventsFlow.collect {
+                    Timber.d("rymins it :$it")
                     when (it) {
                         is TimerViewModel.Event.StartTimer -> viewModel.startTimer()
+                        TimerViewModel.Event.TurnChange -> viewModel.turnChange()
+                        TimerViewModel.Event.PauseTimer -> viewModel.pauseTimer()
+                        TimerViewModel.Event.PlayTimer -> viewModel.startTimer()
 
-                        TimerViewModel.Event.TurnChange ->  viewModel.turnChange()
                         else -> {
 
                         }
