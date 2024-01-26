@@ -18,10 +18,9 @@ import javax.inject.Inject
 class TimerViewModel @Inject constructor() : BaseViewModel<TimerViewModel.Event>() {
 
     private var timerJob: Job? = null
-    private val timeLimit = 1 * 1000L
+    private val timeLimit = 60 * 1000L
 
     sealed class Event {
-        class StartTimer() : Event()
         object TurnChange : Event()
         object PauseTimer : Event()
         object PlayTimer : Event()

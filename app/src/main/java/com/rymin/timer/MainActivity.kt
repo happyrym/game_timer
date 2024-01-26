@@ -28,15 +28,13 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.eventsFlow.collect {
-                    Timber.d("rymins it :$it")
                     when (it) {
-                        is TimerViewModel.Event.StartTimer -> viewModel.startTimer()
                         TimerViewModel.Event.TurnChange -> viewModel.turnChange()
                         TimerViewModel.Event.PauseTimer -> viewModel.pauseTimer()
                         TimerViewModel.Event.PlayTimer -> viewModel.startTimer()
 
                         else -> {
-
+                            Timber.d("rymins it :$it")
                         }
                     }
 

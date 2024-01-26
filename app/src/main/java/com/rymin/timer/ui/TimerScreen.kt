@@ -80,7 +80,7 @@ fun NavigationBarSample(navController: NavHostController) {
     NavigationBar {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
-                icon = { Icon(imageVector = Icons.Default.Face, contentDescription = "face") },
+                icon = { Icon(imageVector = item.icon, contentDescription = item.icon.name) },
                 label = { Text(stringResource(id = item.title)) },
                 selected = selectedItem == index,
                 onClick = { navController.navigate(item.screenRoute) }
@@ -138,7 +138,7 @@ fun TimerScreen(
                             if (isStart) {
                                 viewModel.sendEvent(TimerViewModel.Event.TurnChange)
                             } else {
-                                viewModel.sendEvent(TimerViewModel.Event.StartTimer())
+                                viewModel.sendEvent(TimerViewModel.Event.PlayTimer)
                             }
                         },
                     ) {
